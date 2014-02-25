@@ -11,7 +11,7 @@ xmobar was inspired by the [Ion3] status bar, and supports similar
 features, like dynamic color management, icons, output templates, and
 extensibility through plugins.
 
-This page documents xmobar 0.19 (see [release notes]).
+This page documents xmobar 0.20 (see [release notes]).
 
 [This screenshot] shows xmobar running under [sawfish], with
 antialiased fonts. And [this one] is my desktop with [xmonad] and two
@@ -197,7 +197,10 @@ For the output template:
 
 - `<icon=/path/to/icon.xbm/>` will insert the given bitmap.
 
-- `<action=command>` will execute given command.
+- ```<action=`command` button=12345>``` will execute given command when
+  clicked with specified buttons. If not specified, button is equal to 1
+  (left mouse button). Using old syntax (without backticks surrounding `command`)
+  will result in `button` attribute being ignored.
 
 Other configuration options:
 
@@ -461,9 +464,10 @@ which will produce the expected result.
 
 It's also possible to use action directives of the form:
 
-     <action=command>
+     <action=`command` button=12345>
 
-which will be executed when clicked on.
+which will be executed when clicked on with specified mouse buttons. This tag
+can be nested, allowing different commands to be run depending on button clicked.
 
 ## The `commands` Configuration Option
 
@@ -488,7 +492,7 @@ an example of a template for the commands above using an icon:
 
 This example will run "xclock" command when date is clicked:
 
-    template="<action=xclock>%date%</action>
+    template="<action=`xclock`>%date%</action>
 
 The only internal available command is `Com` (see below Executing
 External Commands). All other commands are provided by plugins. xmobar
@@ -646,15 +650,15 @@ something like:
 
 ### `Weather StationID Args RefreshRate`
 
-- Aliases to the Station ID: so `Weather "LIPB" []` can be used in template as `%LIPB%`
+- Aliases to the Station ID: so `Weather "LIPB" []` can be used in
+  template as `%LIPB%`
 - Args: default monitor arguments
 - Variables that can be used with the `-t`/`--template` argument:
 	    `station`, `stationState`, `year`, `month`, `day`, `hour`,
 	    `wind`, `visibility`, `skyCondition`, `tempC`, `tempF`,
 	    `dewPoint`, `rh`, `pressure`
 - Default template: `<station>: <tempC>C, rh <rh>% (<hour>)`
-- Requires `curl` in the `$PATH` to retrieve weather information from
-  `http://weather.noaa.gov`
+- Retrieves weather information from http://weather.noaa.gov.
 
 ### `Network Interface Args RefreshRate`
 
@@ -954,10 +958,10 @@ more than one battery.
   The environment variables `MPD_HOST` and `MPD_PORT` are used to configure the
   mpd server to communicate with.
 - Variables that can be used with the `-t`/`--template` argument:
-             `bar`, `state`, `statei`, `volume`, `length`
+             `bar`, `state`, `statei`, `volume`, `length`,
              `lapsed`, `remaining`,
-             `plength` (playlist length), `ppos` (playlist position)
-             `name`, `artist`, `composer`, `performer`
+             `plength` (playlist length), `ppos` (playlist position),
+             `name`, `artist`, `composer`, `performer`,
              `album`, `title`, `track`, `file`, `genre`
 - Default template: `MPD: <state>`
 - Example (note that you need "--" to separate regular monitor options from
@@ -1137,7 +1141,7 @@ can be used in the output template as `%mydate%`
 - Sample usage: send to xmobar's stdin the list of your workspaces enclosed by
   actions tags that switches the workspaces to be able to switch workspaces by
   clicking on xmobar:
-  `<action=xdotool key alt+1>ws1</action> <action=xdotool key alt+1>ws2</action>`
+  ```<action=`xdotool key alt+1`>ws1</action> <action=`xdotool key alt+1`>ws2</action>```
 
 <font size="+1">**`Date Format Alias RefreshRate`**</font>
 
@@ -1346,11 +1350,11 @@ In particular, xmobar [incorporates patches] by Ben Boeckel, Roman
 Cheplyaka, Patrick Chilton, John Goerzen, Reto Hablützel, Juraj
 Hercek, Tomas Janousek, Spencer Janssen, Jochen Keil, Lennart
 Kolmodin, Krzysztof Kosciuszkiewicz, Dmitry Kurochkin, Todd Lunter,
-Dmitry Malikov, David McLean, Thiago Negri, Edward O'Callaghan, Svein
-Ove, Martin Perner, Jens Petersen, Alexander Polakov, Petr Rockai,
-Peter Simons, Andrew Sackville-West, Alexander Solovyov, John Soros,
-Artem Tarasov, Sergei Trofimovich, Thomas Tuegel, Jan Vornberger,
-Daniel Wagner and Norbert Zeh.
+Dmitry Malikov, David McLean, Marcin Mikołajczyk, Thiago Negri, Edward
+O'Callaghan, Svein Ove, Martin Perner, Jens Petersen, Alexander
+Polakov, Petr Rockai, Peter Simons, Andrew Sackville-West, Alexander
+Solovyov, John Soros, Artem Tarasov, Sergei Trofimovich, Thomas
+Tuegel, Jan Vornberger, Daniel Wagner and Norbert Zeh.
 
 [jao]: http://jao.io
 [incorporates patches]: http://www.ohloh.net/p/xmobar/contributors

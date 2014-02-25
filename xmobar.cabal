@@ -1,5 +1,5 @@
 name:               xmobar
-version:            0.19
+version:            0.20
 homepage:           http://projects.haskell.org/xmobar/
 bug-reports:        http://code.google.com/p/xmobar/issues
 synopsis:           A Minimalistic Text Based Status Bar
@@ -108,6 +108,7 @@ executable xmobar
       X11 >= 1.6.1,
       mtl >= 2.0 && < 2.2,
       parsec == 3.1.*,
+      HTTP >= 4000,
       stm >= 2.3 && < 2.5
 
     if flag(with_threaded)
